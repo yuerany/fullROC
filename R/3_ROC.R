@@ -49,8 +49,8 @@ AUC <- function(cpr, car){
 
 
   # calculate cumulative id rates
-  ca_cum <- c(0, cumsum(car))
   cp_cum <- c(0, cumsum(cpr))
+  ca_cum <- c(0, cumsum(car))
 
   # compute AUC
   ROCarea(cp_cum, ca_cum)
@@ -91,23 +91,20 @@ ROCplot <- function(cpr, car,
       # diagnostic ratio
       DR <- cpr/car
 
-      # replace NA values with infinity
-      DR[is.na(DR)] <- Inf
-
-      # calculate cumulative id rates
-      ca_cum <- cumsum(car[order(DR, decreasing = T)])
-      cp_cum <- cumsum(cpr[order(DR, decreasing = T)])
+      # calculate cumulative id rates; order data by DR; NAs go first
+      cp_cum <- cumsum(cpr[order(DR, decreasing = T, na.last = F)])
+      ca_cum <- cumsum(car[order(DR, decreasing = T, na.last = F)])
 
       # name the vectors
       if(!is.null(names(cpr))) {
-        names(cp_cum) <- names(ca_cum) <- names(cpr)[order(DR, decreasing = T)]
+        names(cp_cum) <- names(ca_cum) <- names(cpr)[order(DR, decreasing = T, na.last = F)]
       }
 
     }
     # not rankes by DR
     else{
-      ca_cum <- cumsum(car)
       cp_cum <- cumsum(cpr)
+      ca_cum <- cumsum(car)
 
       # name the vectors
       if(!is.null(names(cpr))) {
@@ -122,8 +119,8 @@ ROCplot <- function(cpr, car,
   # if id rates are cumulative
   else{
     # order by size
-    ca_cum <- car[order(car)]
     cp_cum <- cpr[order(cpr)]
+    ca_cum <- car[order(car)]
 
     # name the vectors
     if(!is.null(names(cpr))) {
@@ -162,9 +159,7 @@ ROCplot <- function(cpr, car,
   ################################################
   ## calculate the area under the curve (AUC)
   ################################################
-
   ROCarea(cp_cum0, ca_cum0)
-
 
   ######################
   # print cumulative id rates
