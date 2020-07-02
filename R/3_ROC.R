@@ -39,14 +39,33 @@ ROCarea <- function(cp_cum, ca_cum){
 #' A function to calculate AUC using non-cumulative response rates.
 #' @param cpr a vector of cp id rate.
 #' @param car a vector of ca id rate.
+#' @param byDR Whether to order the ids by DR. Defaults to TRUE.
 #' @return Calculated AUC.
 #' @export
 
-AUC <- function(cpr, car){
+AUC <- function(cpr, car, byDR = TRUE){
 
   # judge if inputs are correct
   stopifnot(length(cpr) == length(car) )
 
+  #####################################
+  # calculate cumulative ID rates
+  # Ranked by DR or NOT
+  #####################################
+  # if ranked by DR
+  if(byDR == TRUE){
+    # diagnostic ratio
+    DR <- cpr/car
+
+    # calculate cumulative id rates; order data by DR; NAs go first
+    cp_cum <- cumsum(cpr[order(DR, decreasing = T, na.last = F)])
+    ca_cum <- cumsum(car[order(DR, decreasing = T, na.last = F)])
+  }
+  # not ranked by DR
+  else{
+    cp_cum <- cumsum(cpr)
+    ca_cum <- cumsum(car)
+    }
 
   # calculate cumulative id rates
   cp_cum <- c(0, cumsum(cpr))
@@ -55,7 +74,6 @@ AUC <- function(cpr, car){
   # compute AUC
   ROCarea(cp_cum, ca_cum)
 }
-
 
 
 ###############################################
@@ -67,14 +85,16 @@ AUC <- function(cpr, car){
 #' @param car A vector of ca id rate
 #' @param cumulative Whether the id rates are cumulative. Defaults to FALSE.
 #' @param byDR Whether to order the ids by DR. Defaults to TRUE.
-#' @param overlay Whether to overlay the ROC curve on an exisiting plot. Defaults to FALSE.
+#' @param overlay Whether to overlay the ROC curve on an existing plot. Defaults to FALSE.
+#' @param cumdata Whether to output cumulative id rates. Defaults to be FALSE.
 #' @return An ROC plot and a data matrix of cumulative id rates used to create the plot.
 #' @export
 
 ROCplot <- function(cpr, car,
                     cumulative = FALSE,
                     byDR = TRUE,
-                    overlay = FALSE, ...){
+                    overlay = FALSE,
+                    cumdata = FALSE, ...){
 
   # judge if inputs are correct
   stopifnot(length(cpr) == length(car) )
@@ -101,7 +121,7 @@ ROCplot <- function(cpr, car,
       }
 
     }
-    # not rankes by DR
+    # not ranked by DR
     else{
       cp_cum <- cumsum(cpr)
       ca_cum <- cumsum(car)
@@ -163,7 +183,7 @@ ROCplot <- function(cpr, car,
 
   ######################
   # print cumulative id rates
-  return(cpa_cum)
+  if(cumdata == TRUE) return(cpa_cum)
 
 }
 
