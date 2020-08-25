@@ -1,10 +1,3 @@
-#######################################
-# Author: Yueran Yang
-# Date: 5/19/20
-# Purpose: create functions to simulate responses
-#######################################
-
-
 ######################################
 # FUNCTION to calculate response
 ######################################
@@ -15,18 +8,8 @@
 #' @param id_criterion A number to define the criterion for id or rejection. Use the middle element of criterion if not specified.
 #' @param suspect Whether there is a designated suspect. Defaults to TRUE.
 #' @return A data matrix of id responses (IDS, IDF, or REJ) and confidence levels.
-#' @examples
-#' n_sim <- 10000
-#' y_memory <- replicate(n_sim, rnorm(1, mean = 2))
-#' x_memory <- replicate(n_sim, rnorm(1, mean = 0))
-#' filler <- t(replicate(n_sim, rnorm(5, mean = 0)))
-#'
-#' cp_memory <- cbind(y_memory, filler)
-#' ca_memory <- cbind(x_memory, filler)
-#'
-#' response(cp_memory, 1:3)
 
-response <- function(memory, criterion,
+response_calculate <- function(memory, criterion,
                      id_criterion = NULL, suspect = TRUE){
 
   ######################
@@ -85,22 +68,21 @@ response <- function(memory, criterion,
   # return to id responses
   #############################
 
-  return(cbind(ID, confidence))
+  return(data.frame(ID, confidence))
 
 }
 
+#' @examples
+#' n_sim <- 1000
+#' y_memory <- replicate(n_sim, rnorm(1, mean = 2))
+#' x_memory <- replicate(n_sim, rnorm(1, mean = 0))
+#' filler <- t(replicate(n_sim, rnorm(5, mean = 0)))
+#'
+#' cp_memory <- cbind(y_memory, filler)
+#' ca_memory <- cbind(x_memory, filler)
+#'
+#' response(cp_memory, 1:3)
 
-# Test
-# calculate id rates
-# data simulation
-# n_sim <- 10000
-# y_memory <- replicate(n_sim, rnorm(1, mean = 2))
-# x_memory <- replicate(n_sim, rnorm(1, mean = 0))
-# filler <- t(replicate(n_sim, rnorm(5, mean = 0)))
-#
-# cp_memory <- cbind(y_memory, filler)
-# ca_memory <- cbind(x_memory, filler)
-# response(cp_memory, 1:3)
 
 ##############################################
 # FUNCTION to simulate both CP and CA responses
@@ -110,33 +92,18 @@ response <- function(memory, criterion,
 #'
 #' @param guilt_diff Mean difference between guilty suspect and filler distributions.
 #' @param inno_diff Mean difference between innocent suspect and filler distributions. Defaults to 0.
-#' @param n_sim Number of simulations per condition. Defaults to 10,000.
+#' @param n_sim Number of simulations per condition. Defaults to 1,000.
 #' @param size Number of lineup members. Defaults to 6.
 #' @param inno_suspect Whether there is a designated innocent suspect. Defaults to FALSE.
 #' @param criterion A vector of response criteria. Must have odd number of elements if id_criterion is not specified.
 #' @param id_criterion A number to define the criterion for id or rejection. Use the middle element of criterion if not specified.
 #'
-#' @return A list including both CP and CA ID responses and confidence levels.
-#'
-#' @examples
-#' # Set up response criteria
-#' rc1 <- seq(-1, 3, length.out = 5)
-#'
-#' # no designated innocent suspect
-#' RESsimu(guilt_diff = 2, criterion = rc1)
-#'
-#' # with a designated innocent suspect
-#' RESsimu(guilt_diff = 2, inno_diff = 0.2,
-#'        inno_suspect = TRUE, criterion = rc1)
-#'
-#' # define a criterion for id/rejection instead of using the middle criterion
-#' RESsimu(guilt_diff = 2, criterion = 0:3, id_criterion = 1)
-#'
+#' @return A data frame including both CP and CA ID responses and confidence levels.
 #' @export
 
 
-RESsimu <- function(guilt_diff, inno_diff = 0,
-                   n_sim = 10000, size = 6,
+response_simu <- function(guilt_diff, inno_diff = 0,
+                   n_sim = 1000, size = 6,
                    inno_suspect = FALSE,
                    criterion, id_criterion = NULL){
 
@@ -154,14 +121,26 @@ RESsimu <- function(guilt_diff, inno_diff = 0,
   ca_memory <- cbind(x_memory, filler2)
 
   # cp responses
-  cp_id <- response(cp_memory, criterion, id_criterion)
+  cp_id <- data.frame( lineup = "cp", response_calculate(cp_memory, criterion, id_criterion) )
   # ca responses
-  ca_id <- response(ca_memory, criterion, id_criterion, suspect = inno_suspect)
+  ca_id <- data.frame( lineup = "ca", response_calculate(ca_memory, criterion, id_criterion, suspect = inno_suspect) )
 
   # combine the two
-  id <- list(cp = cp_id,
-             ca = ca_id)
+  id <- rbind(cp_id, ca_id)
 
   return(id)
 }
 
+#' @examples
+#' # Set up response criteria
+#' rc1 <- seq(-1, 3, length.out = 5)
+#'
+#' # no designated innocent suspect
+#' RESsimu(guilt_diff = 2, criterion = rc1)
+#'
+#' # with a designated innocent suspect
+#' RESsimu(guilt_diff = 2, inno_diff = 0.2,
+#'        inno_suspect = TRUE, criterion = rc1)
+#'
+#' # define a criterion for id/rejection instead of using the middle criterion
+#' RESsimu(guilt_diff = 2, criterion = 0:3, id_criterion = 1)
