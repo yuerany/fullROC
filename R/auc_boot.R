@@ -65,8 +65,8 @@ auc_boot0 <- function(data,
 # EXPORT FUNCTION: auc_boot
 #=======================================
 # for multiple groups
-
-#' A function to simulate bootstrap samples and calculate AUC.
+#' @title Bootstrap AUCs
+#' @description A function to simulate bootstrap samples and calculate AUC.
 #' @param data A data frame or matrix saving both cp and ca frequencies. cp must preceed ca.
 #' @param group A vector indicating group membership. Will calculate AUCs by group.
 #' @param nboot Number of bootstrap iterations for each group. Defaults to 1,000.
@@ -75,6 +75,12 @@ auc_boot0 <- function(data,
 #' @param lsize Size of lineup (used to adjust id rates). Defaults to 6.
 #' @param csize Number of confidence levels (used to adjust id rates). Defaults to 3.
 #' @return A list with simulated AUCs.
+#'
+#' @examples
+#' cpf <- c(100, 90, 80, 20, 10, 5)
+#' caf <- c(6, 7, 15, 50, 75, 120)
+#' auc_boot(cbind(cpf, caf), nboot = 100)
+#'
 #' @export
 
 auc_boot <- function(data, group = NULL,
@@ -123,8 +129,11 @@ auc_boot <- function(data, group = NULL,
 
       atmp <- do.call(auc_boot0, fargs)
 
+      # list name
+      gname <- ifelse(is.numeric(g), paste0("X", g), g)
+
       # save simulated auc
-      aucslist[[g]] <- atmp
+      aucslist[[gname]] <- atmp
 
     }
     return(aucslist)
@@ -132,14 +141,6 @@ auc_boot <- function(data, group = NULL,
 
 }
 
-# test
-# auc_boot(cbind(cpf, caf), group, nboot = 20)
-# ssample <- auc_boot(simu_rate[c("freq_cp", "freq_ca")], nboot = 10)
-# ssample <- auc_boot(d2[c("cp", "ca")], group = d2$Condition, nboot = 30)
-#' @examples
-#' cpf <- c(100, 90, 80, 20, 10, 5)
-#' caf <- c(6, 7, 15, 50, 75, 120)
-#' auc_boot(cbind(cpf, caf), nboot = 20)
 
 
 ####################################
@@ -167,13 +168,31 @@ mean_quan <- function(x, alpha){
 
 #===================================
 # Compute CIs
-#' A function to simulate bootstrap samples and calculate CIs for AUC and differences.
+#' @title Bootstrap confidence intervals for AUC
+#' @description A function to simulate bootstrap samples and calculate CIs for AUC and differences.
 #' @param cpf A vector of cp frequencies.
 #' @param caf A vector of ca frequencies.
 #' @param group A vector indicating group membership. Will calculate AUC by group.
 #' @param nboot Number of bootstrap iterations. Defaults to 1,000.
 #' @param alpha Alpha level for the CIs. Defaults to 0.05.
 #' @return A data frame of CIs for each group and group differences.
+#'
+#' @examples
+#' cpf1 <- c(100, 90, 80, 20, 10, 5)
+#' caf1 <- c(6, 7, 15, 50, 75, 120)
+#' auc_ci(cpf1, caf1, nboot = 50)
+#'
+#'
+#' cpf2 <- c(90, 40, 20)
+#' caf2 <- c(10, 70, 80)
+#' auc_ci(cpf2, caf2, nboot = 100)
+#'
+#' # compare two groups
+#' cpf <- c(cpf1, cpf2)
+#' caf <- c(caf1, caf2)
+#' group <- rep(letters[1:2], times = c(length(cpf1), length(cpf2) ) )
+#' auc_ci(cpf, caf, group = group)
+#'
 #' @export
 
 auc_ci <- function(cpf, caf, group = NULL,
@@ -206,15 +225,19 @@ auc_ci <- function(cpf, caf, group = NULL,
     # empty difference list
     sdiff <- NULL
 
+    # unique group
+    ug <- unique(group)
+    if(is.numeric(group)) ug <- paste0("X", ug)
+
     # number of groups
-    ng <- length(unique(group))
+    ng <- length(ug)
 
     for(i in 1:(ng-1)){
 
       for(j in (i+1):ng){
         # select two groups
-        g1 <- unique(group)[i]
-        g2 <- unique(group)[j]
+        g1 <- ug[i]
+        g2 <- ug[j]
 
         sdiff[[paste(g1, g2, sep = "..")]] <- (ssample[[g1]] - ssample[[g2]])
       }
@@ -228,6 +251,3 @@ auc_ci <- function(cpf, caf, group = NULL,
 
 }
 
-
-#' @examples
-#' cpf <-

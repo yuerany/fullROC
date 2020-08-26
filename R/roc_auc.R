@@ -108,7 +108,7 @@ roc_auc0 <- function(data, byDR = FALSE){
 #' A function to calculate AUC using non-cumulative response rates.
 #' @param cpr A vector of cp id rate.
 #' @param car A vector of ca id rate.
-#' @param group A vector indicating group membership. Will calculate AUC by group.
+#' @param group A vector indicating group membership. If specified, will calculate AUC by group.
 #' @param byDR Whether to order the ids by DR. Defaults to FALSE.
 #' @return Area under the curve
 

@@ -4,9 +4,10 @@ Title: Plot ROC using response rates
 Version: 0.1.0
 Author: Yueran Yang
 Maintainer: Yueran Yang <yuerany@unr.edu>
-Description: Enable researchers to adjust the id rates using the 1/n method 
-    and compute a variety of performance indices.
+Description: Enable researchers to adjust the id rates using the 1/(lineup size) method 
+    and generate full roc curves.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)

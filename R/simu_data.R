@@ -8,6 +8,14 @@
 #' @param id_criterion A number to define the criterion for id or rejection. Use the middle element of criterion if not specified.
 #' @param suspect Whether there is a designated suspect. Defaults to TRUE.
 #' @return A data matrix of id responses (IDS, IDF, or REJ) and confidence levels.
+#
+# y_memory <- replicate(n_sim, rnorm(1, mean = 2))
+# x_memory <- replicate(n_sim, rnorm(1, mean = 0))
+# filler <- t(replicate(n_sim, rnorm(5, mean = 0)))
+#
+# cp_memory <- cbind(y_memory, filler)
+# ca_memory <- cbind(x_memory, filler)
+# response_calculate(cp_memory, 1:3)
 
 response_calculate <- function(memory, criterion,
                      id_criterion = NULL, suspect = TRUE){
@@ -72,16 +80,6 @@ response_calculate <- function(memory, criterion,
 
 }
 
-#' @examples
-#' n_sim <- 1000
-#' y_memory <- replicate(n_sim, rnorm(1, mean = 2))
-#' x_memory <- replicate(n_sim, rnorm(1, mean = 0))
-#' filler <- t(replicate(n_sim, rnorm(5, mean = 0)))
-#'
-#' cp_memory <- cbind(y_memory, filler)
-#' ca_memory <- cbind(x_memory, filler)
-#'
-#' response(cp_memory, 1:3)
 
 
 ##############################################
@@ -99,6 +97,20 @@ response_calculate <- function(memory, criterion,
 #' @param id_criterion A number to define the criterion for id or rejection. Use the middle element of criterion if not specified.
 #'
 #' @return A data frame including both CP and CA ID responses and confidence levels.
+#'
+#' @examples
+#' # Set up response criteria
+#' rc1 <- seq(-1, 3, length.out = 5)
+#'
+#' # no designated innocent suspect
+#' response_simu(guilt_diff = 2, criterion = rc1)
+#'
+#' # with a designated innocent suspect
+#' response_simu(guilt_diff = 2, inno_diff = 0.2, inno_suspect = TRUE, criterion = rc1)
+#'
+#' # define a criterion for id/rejection instead of using the middle criterion
+#' response_simu(guilt_diff = 2, criterion = 0:3, id_criterion = 1)
+#'
 #' @export
 
 
@@ -131,16 +143,4 @@ response_simu <- function(guilt_diff, inno_diff = 0,
   return(id)
 }
 
-#' @examples
-#' # Set up response criteria
-#' rc1 <- seq(-1, 3, length.out = 5)
-#'
-#' # no designated innocent suspect
-#' RESsimu(guilt_diff = 2, criterion = rc1)
-#'
-#' # with a designated innocent suspect
-#' RESsimu(guilt_diff = 2, inno_diff = 0.2,
-#'        inno_suspect = TRUE, criterion = rc1)
-#'
-#' # define a criterion for id/rejection instead of using the middle criterion
-#' RESsimu(guilt_diff = 2, criterion = 0:3, id_criterion = 1)
+

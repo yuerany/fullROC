@@ -12,13 +12,21 @@
 #=========================================
 # VARIATION 1: SIMPLE PROJECTION
 #=========================================
-#' @title Simple projection
-#' A function to adjust the id rates for ca lineups using the 1/(lineup size) method;
-#' is applicable to ordered id rates with the same set of confidence levels for all responses.
+#' @title Simple adjustment
+#' @description A function to adjust the id rates for ca lineups using the 1/(lineup size) method;
+#' is applicable to ordered id rates with the same confidence levels for all responses.
 #'
 #' @param rate ID rate vector.
 #' @param lsize Lineup size. Defaults to 6.
-#' @param csize. Number of confidence levels. Defaults to 3.
+#' @param csize Number of confidence levels. Defaults to 3.
+#' @return Adjusted ID vector.
+#' @examples
+#' ca_id <- c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2))
+#' id_adj(ca_id)
+#' # change line size to 5
+#' id_adj(ca_id, lsize = 5)
+#' @export
+
 
 id_adj <- function(rate, lsize = 6, csize = 3){
 
@@ -32,26 +40,24 @@ id_adj <- function(rate, lsize = 6, csize = 3){
 
 }
 
-#' @examples
-#' ca_id <- c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2))
-#' id_adj(ca_id)
-#' # change line size to 5
-#' id_adj(ca_id, lsize = 5)
-
 
 
 #=========================================
 # VARIATION 2: MATCH BY POSITION
 #=========================================
 #' @title Match by position
-#' A function to adjust the id rates for ca lineups using the 1/(lineup size) method;
+#' @description A function to adjust the id rates for ca lineups using the 1/(lineup size) method;
 #' match and adjust id rates by positions of filler and suspect ids.
-#'
 #'
 #' @param rate ID rate vector.
 #' @param fid Mapping positions from filler id.
 #' @param sid To-be-matched positions for suspect id. Must have equal length as fid.
 #' @param lsize Lineup size. Defaults to 6.
+#'
+#' @return Adjusted ID vector.
+#' @examples
+#' ca_id <- c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2))
+#' id_adj_pos(ca_id, fid = 4:6, sid = 1:3, lsize = 5)
 #' @export
 
 
@@ -70,25 +76,29 @@ id_adj_pos <- function(rate, fid, sid, lsize = 6) {
 }
 
 
-#' @examples
-#' ca_id <- c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2))
-#' id_adj_pos(ca_id, fid = 4:6, sid = 1:3, lsize = 5)
-
-
 
 
 #=========================================
 # VARIATION 3: MATCH BY CONFIDENCE NAME
 #=========================================
 #' @title Match by confidence levels
-#' A function to adjust the id rates for ca lineups using the 1/(lineup size) method;
+#' @description A function to adjust the id rates for ca lineups using the 1/(lineup size) method;
 #' match and adjust id rates by names of confidence levels for both filler and suspect ids.
-#'
-#' @param id ID rate vector.
+#' @param rate ID rate vector.
 #' @param conf Confidence levels for the id rate vector. Default to be NULL.
 #' @param fid Mapping confidence levels from filler id.
 #' @param sid To-be-matched confidence levels for suspect id. Must have equal length as fid.
 #' @param lsize Lineup size. Defaults to 6.
+#'
+#' @return Adjusted ID vector.
+#' @examples
+#' ca_id <- c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2))
+#' names(ca_id) <- paste0(rep(c("IDS", "IDF", "REJ"), each = 3), c("high", "medium", "low"))
+#'
+#' fid_conf <- paste0("IDF", c("high", "medium", "low"))
+#' sid_conf <- paste0("IDS", c("high", "medium", "low"))
+#'
+#' id_adj_name(ca_id, fid = fid_conf, sid = sid_conf)
 #' @export
 
 
@@ -132,11 +142,3 @@ id_adj_name <- function(rate, conf = NULL, fid, sid, lsize = 6){
 }
 
 
-#' @examples
-#' ca_id <- c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2))
-#' names(ca_id) <- paste0(rep(c("IDS", "IDF", "REJ"), each = 3), c("high", "medium", "low"))
-#'
-#' fid_conf <- paste0("IDF", c("high", "medium", "low"))
-#' sid_conf <- paste0("IDS", c("high", "medium", "low"))
-#'
-#' id_adj_name(ca_id, fid = fid_conf, sid = sid_conf)
