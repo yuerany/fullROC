@@ -7,16 +7,16 @@
 roc_auc(cpr, car, group = NULL, byDR = FALSE)
 }
 \arguments{
-\item{cpr}{A vector of cp id rate.}
+\item{cpr}{A vector of cp id rates.}
 
-\item{car}{A vector of ca id rate.}
+\item{car}{A vector of ca id rates.}
 
 \item{group}{A vector indicating group membership. If specified, will calculate AUC by group.}
 
-\item{byDR}{Whether to order the ids by DR. Defaults to FALSE.}
+\item{byDR}{Whether to order ids by diagnosticity ratios. Defaults to FALSE.}
 }
 \value{
-Area under the curve
+Area under the curve.
 }
 \description{
 A function to calculate AUC using non-cumulative response rates.

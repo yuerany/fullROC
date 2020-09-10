@@ -1,12 +1,40 @@
 ###################################
+# FUNCTION to create plots with defaults
+###################################
+
+# set up the default of
+# xlab and ylab
+# xlim and ylim
+
+plot_add <- function(x, ...){
+
+  # set up arguments
+  arguments <- list(
+    x = x,
+    ...,
+
+    xlim = c(0, 1),
+    ylim = c(0, 1),
+
+    xlab = "Innocent suspect rate",
+    ylab = "Guilty suspect rate"
+  )
+
+  arguments <- arguments[!duplicated(names(arguments))]
+
+  do.call(plot, arguments)
+}
+
+
+###################################
 # FUNCTION to create lines with defaults
 ###################################
 
-# set up the default of line type to be "o" (overlay),
-# pch = 20 (a dot),
-# and lwd = 2
+# set up the default of
+# type = "o"
+# pch = 20
 
-line_add <- function(x, y, ...){
+lines_add <- function(x, y, ...){
 
   # set up arguments
   arguments <- list(
@@ -14,51 +42,97 @@ line_add <- function(x, y, ...){
     y = y,
     ...,
     type = "o",
-    pch = 20,
-    lwd = 2
+    pch = 20
   )
 
   arguments <- arguments[!duplicated(names(arguments))]
 
-  do.call("lines", arguments)
+  do.call(lines, arguments)
 }
 
 
+###################################
+# FUNCTION to create legend with defaults
+###################################
 
+# set up the default of
+# lty = 1
+# pch = 20
+
+legend_add <- function(...){
+
+  # set up arguments
+  arguments <- list(
+    ...,
+    lty = 1,
+    pch = 20
+  )
+
+  arguments <- arguments[!duplicated(names(arguments))]
+
+  do.call(legend, arguments)
+}
 
 ###############################################
 # FUNCTION to plot ROC curve and calculate AUC
 ###############################################
-#' A function to plot the cumulative ROC curve.
+#' A function to plot ROC curves.
 #'
-#' @param cpr A vector of cp id rate
-#' @param car A vector of ca id rate
+#' @param cp A vector of cp id rates or frequencies.
+#' @param ca A vector of ca id rates or frequencies.
 #' @param group Grouping variable to indicate group membership. Will create an ROC curve and calculate AUC for each group.
-#' @param byDR Whether to order the ids by DR. Defaults to FALSE.
-#' @return NULL. Generate an ROC plot and auc as side effects.
+#' @param byDR Whether to order ids by diagnosticity ratios. Defaults to FALSE.
+#' @param grayscale Whether to produce the plot in grayscale. Defaults to FALSE.
+#' @param ... Additional plotting parameters.
+#'            For example, users can change x-axis and y-axis labels using \code{xlab} and \code{ylab}.
+#' @return Plot ROC curves and calculate AUCs as side effects.
+#'
+#' @examples
+#' cpf1 <- c(100, 90, 80, 20, 10, 5)
+#' caf1 <- c(6, 7, 15, 50, 75, 120)
+#' roc_plot(cpf1, caf1)
+#'
+#'
+#' cpf2 <- c(90, 40, 20)
+#' caf2 <- c(10, 70, 80)
+#' roc_plot(cpf2, caf2)
+#'
+#' ## plot two ROC curves
+#' cpf <- c(cpf1, cpf2)
+#' caf <- c(caf1, caf2)
+#' group <- rep(letters[1:2], times = c(length(cpf1), length(cpf2) ) )
+#' roc_plot(cpf, caf, group = group)
+#'
 #' @export
 
-roc_plot <- function(cpr, car,
-                     group = NULL, byDR = FALSE,
-                     xlab = "Innocent suspect rate", ylab = "Guilty suspect rate",
+roc_plot <- function(cp, ca,
+                     group = NULL,
+                     byDR = FALSE,
+                     grayscale = FALSE,
                      ...){
 
-  message("check order of input: cpr first, car second")
+  message("check order of input: cp first, ca second")
 
   # set up data
-  data <- data.frame(cpr, car)
+  data <- data.frame(cp, ca)
 
   # set up plotting area
-  plot(NA,
-       xlim = c(0, 1), ylim = c(0, 1),
-       xlab = xlab, ylab = ylab,
-       ...)
+  plot_add(NA, ...)
+
+  # group color indicator
+  lc <- seq_along(unique(group))
+
+  # grayscale
+  lgray <- gray((lc-1)/length(lc))
+
+  # line color indicator
+  if(grayscale == TRUE) {lc <- lgray}
 
   # plot by group
   if(!is.null(group)){
 
-    # color index
-    ic <- 1
+    # line color index
+    i <- 1
 
     # create ROC curve and calculate AUC for each group
     for(g in unique(group)){
@@ -70,16 +144,15 @@ roc_plot <- function(cpr, car,
       d_cum <- data_cum(dtmp, byDR = byDR)
 
       ### add ROC curve
-      line_add(d_cum[, 2], d_cum[, 1], col = ic, ...)
+      lines_add(d_cum[, 2], d_cum[, 1], col = lc[i], ...)
 
       ### calculate auc
       cat(g, "\n", "AUC =", roc_auc0(dtmp, byDR = byDR), "\n")
 
-      ic <- ic + 1
+      i <- i + 1
     }
 
-    legend("bottomright", col = seq_along(unique(group)), bty = "n",
-           legend = unique(group), ...)
+    legend_add("bottomright", col = lc, legend = unique(group), bty = "n", ...)
 
   }
 
@@ -90,10 +163,12 @@ roc_plot <- function(cpr, car,
     d_cum <- data_cum(data, byDR = byDR)
 
     ### add ROC curve
-    line_add(d_cum[, 2], d_cum[, 1], ...)
+    lines_add(d_cum[, 2], d_cum[, 1], ...)
 
     ### calculate auc
     cat("AUC =", roc_auc0(data, byDR = byDR), "\n")
   }
 
 }
+
+

@@ -16,6 +16,8 @@ auc_ci(cpf, caf, group = NULL, nboot = 1000, alpha = 0.05, ...)
 \item{nboot}{Number of bootstrap iterations. Defaults to 1,000.}
 
 \item{alpha}{Alpha level for the CIs. Defaults to 0.05.}
+
+\item{...}{Additional arguments in \link[fullROC:auc_boot]{auc_boot}. Will allow users to adjust ca id rates in each simulation.}
 }
 \value{
 A data frame of CIs for each group and group differences.
@@ -28,12 +30,11 @@ cpf1 <- c(100, 90, 80, 20, 10, 5)
 caf1 <- c(6, 7, 15, 50, 75, 120)
 auc_ci(cpf1, caf1, nboot = 50)
 
-
 cpf2 <- c(90, 40, 20)
 caf2 <- c(10, 70, 80)
 auc_ci(cpf2, caf2, nboot = 100)
 
-# compare two groups
+## compare two groups
 cpf <- c(cpf1, cpf2)
 caf <- c(caf1, caf2)
 group <- rep(letters[1:2], times = c(length(cpf1), length(cpf2) ) )

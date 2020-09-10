@@ -1,10 +1,10 @@
 Package: fullROC
 Type: Package
-Title: Plot ROC using response rates
+Title: Plot ROC using adjusted id rates
 Version: 0.1.0
 Author: Yueran Yang
 Maintainer: Yueran Yang <yuerany@unr.edu>
-Description: Enable researchers to adjust the id rates using the 1/(lineup size) method 
+Description: Enable researchers to adjust id rates using the 1/(lineup size) method 
     and generate full roc curves.
 License: GPL-3
 Encoding: UTF-8

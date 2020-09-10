@@ -15,15 +15,15 @@ auc_boot(
 )
 }
 \arguments{
-\item{data}{A data frame or matrix saving both cp and ca frequencies. cp must preceed ca.}
+\item{data}{A data frame or matrix saving both cp and ca frequencies. cp must precede ca.}
 
 \item{group}{A vector indicating group membership. Will calculate AUCs by group.}
 
 \item{nboot}{Number of bootstrap iterations for each group. Defaults to 1,000.}
 
-\item{byDR}{Whether to order the ids by DR. Defaults to FALSE.}
+\item{byDR}{Whether to order ids by diagnosticity ratios. Defaults to FALSE.}
 
-\item{ca_adj}{Whether to adjust id rates for ca lineups.}
+\item{ca_adj}{Whether to adjust id rates for ca lineups \emph{after} simulating a sample from the unadjusted rates.}
 
 \item{lsize}{Size of lineup (used to adjust id rates). Defaults to 6.}
 

@@ -43,7 +43,7 @@ data_cum <- function(data, byDR = FALSE){
     dr <- data[, 1]/data[, 2]
     d_cum <- apply(data, 2, id_cum, dr = dr)
   }
-  # no order
+  # not order
   else{
     d_cum <- apply(data, 2, id_cum)
   }
@@ -106,11 +106,12 @@ roc_auc0 <- function(data, byDR = FALSE){
 # export
 ###############################################
 #' A function to calculate AUC using non-cumulative response rates.
-#' @param cpr A vector of cp id rate.
-#' @param car A vector of ca id rate.
+#' @param cpr A vector of cp id rates.
+#' @param car A vector of ca id rates.
 #' @param group A vector indicating group membership. If specified, will calculate AUC by group.
-#' @param byDR Whether to order the ids by DR. Defaults to FALSE.
-#' @return Area under the curve
+#' @param byDR Whether to order ids by diagnosticity ratios. Defaults to FALSE.
+#' @return Area under the curve.
+#' @export
 
 # add group variable
 roc_auc <- function(cpr, car, group = NULL, byDR = FALSE){

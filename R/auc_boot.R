@@ -67,11 +67,11 @@ auc_boot0 <- function(data,
 # for multiple groups
 #' @title Bootstrap AUCs
 #' @description A function to simulate bootstrap samples and calculate AUC.
-#' @param data A data frame or matrix saving both cp and ca frequencies. cp must preceed ca.
+#' @param data A data frame or matrix saving both cp and ca frequencies. cp must precede ca.
 #' @param group A vector indicating group membership. Will calculate AUCs by group.
 #' @param nboot Number of bootstrap iterations for each group. Defaults to 1,000.
-#' @param byDR Whether to order the ids by DR. Defaults to FALSE.
-#' @param ca_adj Whether to adjust id rates for ca lineups.
+#' @param byDR Whether to order ids by diagnosticity ratios. Defaults to FALSE.
+#' @param ca_adj Whether to adjust id rates for ca lineups *after* simulating a sample from the unadjusted rates.
 #' @param lsize Size of lineup (used to adjust id rates). Defaults to 6.
 #' @param csize Number of confidence levels (used to adjust id rates). Defaults to 3.
 #' @return A list with simulated AUCs.
@@ -175,6 +175,7 @@ mean_quan <- function(x, alpha){
 #' @param group A vector indicating group membership. Will calculate AUC by group.
 #' @param nboot Number of bootstrap iterations. Defaults to 1,000.
 #' @param alpha Alpha level for the CIs. Defaults to 0.05.
+#' @param ... Additional arguments in \link[fullROC:auc_boot]{auc_boot}. Will allow users to adjust ca id rates in each simulation.
 #' @return A data frame of CIs for each group and group differences.
 #'
 #' @examples
@@ -182,12 +183,11 @@ mean_quan <- function(x, alpha){
 #' caf1 <- c(6, 7, 15, 50, 75, 120)
 #' auc_ci(cpf1, caf1, nboot = 50)
 #'
-#'
 #' cpf2 <- c(90, 40, 20)
 #' caf2 <- c(10, 70, 80)
 #' auc_ci(cpf2, caf2, nboot = 100)
 #'
-#' # compare two groups
+#' ## compare two groups
 #' cpf <- c(cpf1, cpf2)
 #' caf <- c(caf1, caf2)
 #' group <- rep(letters[1:2], times = c(length(cpf1), length(cpf2) ) )

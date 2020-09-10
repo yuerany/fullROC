@@ -2,30 +2,44 @@
 % Please edit documentation in R/roc_plot.R
 \name{roc_plot}
 \alias{roc_plot}
-\title{A function to plot the cumulative ROC curve.}
+\title{A function to plot ROC curves.}
 \usage{
-roc_plot(
-  cpr,
-  car,
-  group = NULL,
-  byDR = FALSE,
-  xlab = "Innocent suspect rate",
-  ylab = "Guilty suspect rate",
-  ...
-)
+roc_plot(cp, ca, group = NULL, byDR = FALSE, grayscale = FALSE, ...)
 }
 \arguments{
-\item{cpr}{A vector of cp id rate}
+\item{cp}{A vector of cp id rates or frequencies.}
 
-\item{car}{A vector of ca id rate}
+\item{ca}{A vector of ca id rates or frequencies.}
 
 \item{group}{Grouping variable to indicate group membership. Will create an ROC curve and calculate AUC for each group.}
 
-\item{byDR}{Whether to order the ids by DR. Defaults to FALSE.}
+\item{byDR}{Whether to order ids by diagnosticity ratios. Defaults to FALSE.}
+
+\item{grayscale}{Whether to produce the plot in grayscale. Defaults to FALSE.}
+
+\item{...}{Additional plotting parameters.
+For example, users can change x-axis and y-axis labels using \code{xlab} and \code{ylab}.}
 }
 \value{
-NULL. Generate an ROC plot and auc as side effects.
+Plot ROC curves and calculate AUCs as side effects.
 }
 \description{
-A function to plot the cumulative ROC curve.
+A function to plot ROC curves.
+}
+\examples{
+cpf1 <- c(100, 90, 80, 20, 10, 5)
+caf1 <- c(6, 7, 15, 50, 75, 120)
+roc_plot(cpf1, caf1)
+
+
+cpf2 <- c(90, 40, 20)
+caf2 <- c(10, 70, 80)
+roc_plot(cpf2, caf2)
+
+## plot two ROC curves
+cpf <- c(cpf1, cpf2)
+caf <- c(caf1, caf2)
+group <- rep(letters[1:2], times = c(length(cpf1), length(cpf2) ) )
+roc_plot(cpf, caf, group = group)
+
 }

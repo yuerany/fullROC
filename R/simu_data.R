@@ -99,16 +99,16 @@ response_calculate <- function(memory, criterion,
 #' @return A data frame including both CP and CA ID responses and confidence levels.
 #'
 #' @examples
-#' # Set up response criteria
+#' ## Set up response criteria
 #' rc1 <- seq(-1, 3, length.out = 5)
 #'
-#' # no designated innocent suspect
+#' ## no designated innocent suspect
 #' response_simu(guilt_diff = 2, criterion = rc1)
 #'
-#' # with a designated innocent suspect
+#' ## with a designated innocent suspect
 #' response_simu(guilt_diff = 2, inno_diff = 0.2, inno_suspect = TRUE, criterion = rc1)
 #'
-#' # define a criterion for id/rejection instead of using the middle criterion
+#' ## define a criterion for id/rejection instead of using the middle criterion
 #' response_simu(guilt_diff = 2, criterion = 0:3, id_criterion = 1)
 #'
 #' @export

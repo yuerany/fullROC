@@ -23,14 +23,15 @@
 #' @examples
 #' ca_id <- c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2))
 #' id_adj(ca_id)
-#' # change line size to 5
+#'
+#' ## change line size to 5
 #' id_adj(ca_id, lsize = 5)
 #' @export
 
 
 id_adj <- function(rate, lsize = 6, csize = 3){
 
-  # compute the projection matrix
+  ##  compute the projection matrix
   proj <- matrix(c(0, 1/lsize, 0,
                    0, (lsize-1)/lsize, 0,
                    0, 0, 1),
@@ -114,8 +115,7 @@ id_adj_name <- function(rate, conf = NULL, fid, sid, lsize = 6){
   jconf <- c(fid, sid)
 
   if(sum(!(jconf %in% conf)) > 0){
-    cat(paste(jconf[jconf %in% conf == FALSE], "not identified. \n"))
-    stop("cannot find confidence levels")
+    stop(paste("cannot find confidence level:", jconf[jconf %in% conf == FALSE], "\n  ") )
   }
 
   if(length(fid) != length(sid)){

@@ -11,7 +11,7 @@ id_adj(rate, lsize = 6, csize = 3)
 
 \item{lsize}{Lineup size. Defaults to 6.}
 
-\item{csize.}{Number of confidence levels. Defaults to 3.}
+\item{csize}{Number of confidence levels. Defaults to 3.}
 }
 \value{
 Adjusted ID vector.
@@ -23,6 +23,7 @@ is applicable to ordered id rates with the same confidence levels for all respon
 \examples{
 ca_id <- c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2))
 id_adj(ca_id)
-# change line size to 5
+
+## change line size to 5
 id_adj(ca_id, lsize = 5)
 }
