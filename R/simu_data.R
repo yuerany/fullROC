@@ -31,7 +31,7 @@ response_calculate <- function(memory, criterion,
   # get suspect memory
   suspect_memory <- memory[,1]
 
-  # caculate the max memory for each simulated row
+  # calculate the max memory for each simulated row
   max_memory <- apply(memory, 1, max)
 
   #############################
@@ -123,8 +123,8 @@ response_simu <- function(guilt_diff, inno_diff = 0,
   fsize <- size-1
 
   # simulate suspect and filler memory
-  y_memory <- replicate(n_sim, rnorm(1, mean = guilt_diff))
-  x_memory <- replicate(n_sim, rnorm(1, mean = inno_diff))
+  y_memory <- rnorm(n_sim, mean = guilt_diff)
+  x_memory <- rnorm(n_sim, mean = inno_diff)
   filler1 <- t(replicate(n_sim, rnorm(fsize, mean = 0)))
   filler2 <- t(replicate(n_sim, rnorm(fsize, mean = 0)))
 
