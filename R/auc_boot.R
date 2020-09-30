@@ -19,7 +19,7 @@ boot_simu <- function(x, xr = NULL){
 
 
   # compute response rates
-  xsr <- c(proportions(table(xs)))
+  xsr <- c(prop.table(table(xs)))
 
   return(xsr)
 }
