@@ -22,14 +22,25 @@
 #' @return Adjusted ID vector.
 #' @examples
 #' ca_id <- c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2))
-#' id_adj(ca_id)
+#' id_adj_old(ca_id)
 #'
 #' ## change line size to 5
-#' id_adj(ca_id, lsize = 5)
-#' @export
+#' id_adj_old(ca_id, lsize = 5)
+#'
+#' ## For multiple groups
+#' ca_id2 <- c(c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2)),
+#'             c(rep(0,3), rep(c(0.1, 0.2, 0.3), 2)) )
+#' group <- rep(c("a", "b"), each = 9)
+#' by(ca_id2, group, id_adj_old)
+#'
+#' ## can be used jointly with the pipes commands
+#' d <- data.frame(group, ca_id2)
+#' d %>%
+#'   group_by(group) %>%
+#'   group_map(~ id_adj_old(.x$ca_id2))
 
 
-id_adj <- function(rate, lsize = 6, csize = 3){
+id_adj_old <- function(rate, lsize = 6, csize = 3){
 
   ##  compute the projection matrix
   proj <- matrix(c(0, 1/lsize, 0,
@@ -39,6 +50,57 @@ id_adj <- function(rate, lsize = 6, csize = 3){
 
   return(as.vector(proj %*% rate))
 
+}
+
+
+
+#=========================================
+# VARIATION 1.2: A MORE STABLE VERSION; CAN BE USED WITH PIPES
+#=========================================
+#' @title Simple adjustment
+#' @description A function to adjust the id rates for ca lineups using the 1/(lineup size) method;
+#' is applicable to ordered id rates with the same confidence levels for all responses.
+#'
+#' @param rate ID rate vector.
+#' @param lsize Lineup size. Defaults to 6.
+#' @param csize Number of confidence levels. Defaults to 3.
+#' @return Adjusted ID vector.
+#' @examples
+#' ca_id <- c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2))
+#' id_adj(ca_id)
+#'
+#' ## change line size to 5
+#' id_adj(ca_id, lsize = 5)
+#'
+#' ## For multiple groups
+#' ca_id2 <- c(c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2)),
+#'             c(rep(0,3), rep(c(0.1, 0.2, 0.3), 2)) )
+#' group <- rep(c("a", "b"), each = 9)
+#' ## Adjust id rates by groups
+#' by(ca_id2, group, id_adj)
+#'
+#' ## can be used jointly with the pipes commands
+#' d <- data.frame(group, ca_id2)
+#' d %>%
+#'   group_by(group) %>%
+#'   group_map(~ id_adj(.x$ca_id2))
+#'
+#' @export
+
+id_adj <- function(rate, lsize = 6, csize = 3){
+
+  ##  extract idf
+  idf_old <- rate[(csize+1):(2*csize)]
+  rej <- rate[(2*csize + 1):length(rate)]
+
+  ## compute adjusted ids and idf
+  ids <- idf_old/lsize
+  idf <- idf_old - ids
+
+  ## new rate vector
+  rate_new <- c(ids, idf, rej)
+
+  return(rate_new)
 }
 
 
