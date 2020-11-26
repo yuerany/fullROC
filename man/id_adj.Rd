@@ -20,6 +20,52 @@ Adjusted ID vector.
 A function to adjust the id rates for ca lineups using the 1/(lineup size) method;
 is applicable to ordered id rates with the same confidence levels for all responses.
 }
+\details{
+#=========================================
+}
+\section{VARIATION 1: SIMPLE PROJECTION}{
+#=========================================
+#' @title Simple adjustment
+#' @description A function to adjust the id rates for ca lineups using the 1/(lineup size) method;
+#' is applicable to ordered id rates with the same confidence levels for all responses.
+#'
+#' @param rate ID rate vector.
+#' @param lsize Lineup size. Defaults to 6.
+#' @param csize Number of confidence levels. Defaults to 3.
+#' @return Adjusted ID vector.
+#' @examples
+#' ca_id <- c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2))
+#' id_adj_old(ca_id)
+#'
+#' ## change line size to 5
+#' id_adj_old(ca_id, lsize = 5)
+#'
+#' ## For multiple groups
+#' ca_id2 <- c(c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2)),
+#'             c(rep(0,3), rep(c(0.1, 0.2, 0.3), 2)) )
+#' group <- rep(c("a", "b"), each = 9)
+#' by(ca_id2, group, id_adj_old)
+#'
+#' ## can be used jointly with the pipes commands
+#' d <- data.frame(group, ca_id2)
+#' d \%>\%
+#'   group_by(group) \%>\%
+#'   group_map(~ id_adj_old(.x$ca_id2))
+
+id_adj_old <- function(rate, lsize = 6, csize = 3){
+\subsection{compute the projection matrix}{
+
+proj <- matrix(c(0, 1/lsize, 0,
+0, (lsize-1)/lsize, 0,
+0, 0, 1),
+byrow = T, nrow = 3) \%x\% diag(csize)
+
+return(as.vector(proj \%*\% rate))
+
+}
+}
+}
+
 \examples{
 ca_id <- c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2))
 id_adj(ca_id)
@@ -33,11 +79,5 @@ ca_id2 <- c(c(rep(0,3), rep(c(0.1, 0.15, 0.25), 2)),
 group <- rep(c("a", "b"), each = 9)
 ## Adjust id rates by groups
 by(ca_id2, group, id_adj)
-
-## can be used jointly with the pipes commands
-d <- data.frame(group, ca_id2)
-d \%>\%
-  group_by(group) \%>\%
-  group_map(~ id_adj(.x$ca_id2))
 
 }
