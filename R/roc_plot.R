@@ -29,7 +29,6 @@ plot_add <- function(x, ...){
 ###################################
 # FUNCTION to create lines with defaults
 ###################################
-
 # set up the default of
 # type = "o"
 # pch = 20
@@ -54,7 +53,6 @@ lines_add <- function(x, y, ...){
 ###################################
 # FUNCTION to create legend with defaults
 ###################################
-
 # set up the default of
 # lty = 1
 # pch = 20
@@ -103,6 +101,8 @@ legend_add <- function(...){
 #' group <- rep(letters[1:2], times = c(length(cpf1), length(cpf2) ) )
 #' roc_plot(cpf, caf, group = group)
 #'
+#' @importFrom graphics lines legend
+#' @importFrom grDevices gray
 #' @export
 
 roc_plot <- function(cp, ca,

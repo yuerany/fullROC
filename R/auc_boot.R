@@ -193,6 +193,7 @@ mean_quan <- function(x, alpha){
 #' group <- rep(letters[1:2], times = c(length(cpf1), length(cpf2) ) )
 #' auc_ci(cpf, caf, group = group)
 #'
+#' @importFrom stats median quantile
 #' @export
 
 auc_ci <- function(cpf, caf, group = NULL,

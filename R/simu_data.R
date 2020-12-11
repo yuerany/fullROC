@@ -110,7 +110,7 @@ response_calculate <- function(memory, criterion,
 #'
 #' ## define a criterion for id/rejection instead of using the middle criterion
 #' response_simu(guilt_diff = 2, criterion = 0:3, id_criterion = 1)
-#'
+#' @importFrom stats rnorm
 #' @export
 
 

@@ -47,5 +47,4 @@ response_simu(guilt_diff = 2, inno_diff = 0.2, inno_suspect = TRUE, criterion = 
 
 ## define a criterion for id/rejection instead of using the middle criterion
 response_simu(guilt_diff = 2, criterion = 0:3, id_criterion = 1)
-
 }
