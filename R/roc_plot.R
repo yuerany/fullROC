@@ -147,7 +147,7 @@ roc_plot <- function(cp, ca,
       lines_add(d_cum[, 2], d_cum[, 1], col = lc[i], ...)
 
       ### calculate auc
-      cat(g, "\n", "AUC =", roc_auc0(dtmp, byDR = byDR), "\n")
+      message(g, "\n", "AUC = ", roc_auc0(dtmp, byDR = byDR), "\n")
 
       i <- i + 1
     }
@@ -166,7 +166,7 @@ roc_plot <- function(cp, ca,
     lines_add(d_cum[, 2], d_cum[, 1], ...)
 
     ### calculate auc
-    cat("AUC =", roc_auc0(data, byDR = byDR), "\n")
+    message("AUC = ", roc_auc0(data, byDR = byDR), "\n")
   }
 
 }

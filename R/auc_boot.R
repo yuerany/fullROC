@@ -1,7 +1,5 @@
 #######################################
-# Author: Yueran Yang
-# Date: 7/31/20
-# Purpose: bootstrap methods to calculate ci's for auc
+# Purpose: bootstrap methods to calculate CI's for AUC
 #######################################
 
 # simulate responses for one bootstrap trial
@@ -88,9 +86,9 @@ auc_boot <- function(data, group = NULL,
                      byDR = FALSE,
                      ca_adj = FALSE, lsize = 6, csize = 3) {
 
-  cat("Simulating", nboot, "samples for each group...", "\n")
+  message("Simulating ", nboot, " samples for each group...", "\n")
 
-  if(ca_adj == TRUE) cat("Adjusting ca rates...", "\n")
+  if(ca_adj == TRUE) message("Adjusting ca rates...", "\n")
 
   #----------------------------
   # set up arguments

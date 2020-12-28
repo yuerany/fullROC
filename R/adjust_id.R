@@ -1,6 +1,6 @@
 ##################################################
 # FUNCTION: ADJUSTING MISTAKEN ID RATES
-# create adjusted id rates using the 1/m method
+# create adjusted ID rates using the 1/m method
 ##################################################
 
 # 3 DIFFERENT FUNCTIONS
@@ -86,7 +86,6 @@ id_adj_pos <- function(rate, fid, sid, lsize = 6) {
 
   return(y)
 }
-
 
 
 

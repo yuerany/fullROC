@@ -1,10 +1,10 @@
 Package: fullROC
 Type: Package
 Title: Plot Full ROC Curves using Eyewitness Lineup Data
+Description: Enable researchers to adjust id rates using the 1/(lineup size) method, generate the full Receiver Operating Characteristic (ROC) curves, and statistically compare the area under the curves (AUC).
 Version: 0.1.0
-Author: Yueran Yang
-Maintainer: Yueran Yang <yuerany@unr.edu>
-Description: Enable researchers to adjust id rates using the 1/(lineup size) method, generate full ROC curves, and statistically compare AUCs.
+Authors@R: person("Yueran", "Yang", email = "yuerany@unr.edu", role = c("aut", "cre"))
+BugReports: https://github.com/yuerany/fullROC/issues
 Language: en-US
 License: GPL-3
 Encoding: UTF-8
@@ -14,3 +14,4 @@ Roxygen: list(markdown = TRUE)
 Imports: 
   stats, 
   graphics
+Reference: Yueran Yang & Andrew Smith. (2020). "fullROC: An R package for generating and analyzing eyewitness-lineup ROC curves" <doi:10.13140/RG.2.2.20415.94885/1> 

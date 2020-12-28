@@ -64,7 +64,7 @@ auc <- function(d_cum){
   cp_cum <- d_cum[, 1]
   ca_cum <- d_cum[, 2]
 
-  # cummulative true positives -- each repeat twice (except for the last element)
+  # cumulative true positives -- each repeat twice (except for the last element)
   cp_cum1 <- rep(cp_cum[-1], each = 2)
   cp_cum2 <- cp_cum1[-length(cp_cum1)]
 
