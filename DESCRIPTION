@@ -14,4 +14,4 @@ Roxygen: list(markdown = TRUE)
 Imports: 
   stats, 
   graphics
-Reference: Yueran Yang & Andrew Smith. (2020). "fullROC: An R package for generating and analyzing eyewitness-lineup ROC curves" <doi:10.13140/RG.2.2.20415.94885/1> 
+References: Yueran Yang & Andrew Smith. (2020). "fullROC: An R package for generating and analyzing eyewitness-lineup ROC curves" <doi:10.13140/RG.2.2.20415.94885/1> 
