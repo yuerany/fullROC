@@ -101,7 +101,7 @@ legend_add <- function(...){
 #' group <- rep(letters[1:2], times = c(length(cpf1), length(cpf2) ) )
 #' roc_plot(cpf, caf, group = group)
 #'
-#' @importFrom graphics lines legend
+#' @importFrom graphics plot lines legend
 #' @importFrom grDevices gray
 #' @export
 
