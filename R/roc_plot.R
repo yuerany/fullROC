@@ -85,6 +85,13 @@ legend_add <- function(...){
 #'            For example, users can change x-axis and y-axis labels using \code{xlab} and \code{ylab}.
 #' @return Plot ROC curves and calculate AUCs as side effects.
 #'
+#' @references
+#' Yueran Yang & Andrew Smith. (2020). "fullROC: An R package for generating and analyzing eyewitness-lineup ROC curves"
+#' \doi{10.13140/RG.2.2.20415.94885/1}
+#'
+#' Andrew Smith, Yueran Yang, & Gary Wells. (2020). "Distinguishing between investigator discriminability and eyewitness discriminability: A method for creating full receiver operating characteristic curves of lineup identification performance". \emph{Perspectives on Psychological Science, 15}(3), 589-607.
+#' \doi{10.1177/1745691620902426}
+#'
 #' @examples
 #' cpf1 <- c(100, 90, 80, 20, 10, 5)
 #' caf1 <- c(6, 7, 15, 50, 75, 120)

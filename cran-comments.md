@@ -7,4 +7,12 @@
 
 0 errors | 0 warnings | 0 notes
 
-* This is a new release.
+
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Added explanations of all acronyms to the DESCRIPTION.
+
+* Dropped references from the DESCRIPTION file and added them to the function documents.
+
+* Changed print()/cat() to message()/warning().
