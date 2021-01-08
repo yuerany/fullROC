@@ -9,10 +9,19 @@
 
 
 ## Resubmission
-This is a resubmission. In this version I have:
+This is a resubmission (1/8/2021). In this version I have:
+
+* Reduce the length of the title to 49 characters (with spaces).
+
+* Added references to the description of the DESCRIPTION file.
+
+
+This is a resubmission (1/6/2021). In this version I have:
 
 * Added explanations of all acronyms to the DESCRIPTION.
 
 * Dropped references from the DESCRIPTION file and added them to the function documents.
 
 * Changed print()/cat() to message()/warning().
+
+
