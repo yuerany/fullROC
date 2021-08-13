@@ -26,7 +26,12 @@ id_cum <- function(rate, dr = NULL){
 
 ###############################################
 # FUNCTION to generate cumulative id rates for both cp and ca lineups
+# ******export*******
 ###############################################
+#' A function to generate cumulative id rates for both cp and ca lineups
+#' @param data A matrix with both cp and ca id rates.
+#' @return A data matrix with cumulative cp and ca id rates.
+#' @export
 
 data_cum <- function(data, byDR = FALSE){
 

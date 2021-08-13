@@ -66,6 +66,7 @@ legend_add <- function(...){
     pch = 20
   )
 
+  # select legend arguments
   arguments <- arguments[!duplicated(names(arguments))]
 
   do.call(legend, arguments)
@@ -159,6 +160,7 @@ roc_plot <- function(cp, ca,
       i <- i + 1
     }
 
+    # add legend
     legend_add("bottomright", col = lc, legend = unique(group), bty = "n", ...)
 
   }
