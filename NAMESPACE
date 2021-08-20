@@ -2,6 +2,7 @@
 
 export(auc_boot)
 export(auc_ci)
+export(data_cum)
 export(id_adj)
 export(id_adj_name)
 export(id_adj_pos)
