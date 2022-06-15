@@ -8,6 +8,8 @@ data_cum(data, byDR = FALSE)
 }
 \arguments{
 \item{data}{A matrix with both cp and ca id rates.}
+
+\item{byDR}{Whether to order ids by diagnosticity ratios. Defaults to FALSE.}
 }
 \value{
 A data matrix with cumulative cp and ca id rates.
