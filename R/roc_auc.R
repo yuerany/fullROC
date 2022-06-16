@@ -38,6 +38,9 @@ data_cum <- function(data, byDR = FALSE){
 
   data <- as.matrix(data)
 
+  # replace NA with 0
+  data[is.na(data)] <- 0
+
   # convert frequencies to rates if necessary
   if(sum(data > 1) > 0){
     data <- apply(data, 2, prop_rate)

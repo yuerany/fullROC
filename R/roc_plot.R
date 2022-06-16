@@ -75,7 +75,7 @@ legend_add <- function(...){
 ###############################################
 # FUNCTION to plot ROC curve and calculate AUC
 ###############################################
-#' A function to plot ROC curves.
+#' A function to plot ROC curves. Note that the NA values in the data will be replaced with zero.
 #'
 #' @param cp A vector of cp id rates or frequencies.
 #' @param ca A vector of ca id rates or frequencies.
