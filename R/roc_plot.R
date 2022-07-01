@@ -127,18 +127,20 @@ roc_plot <- function(cp, ca,
   # set up plotting area
   plot_add(NA, ...)
 
-  # group color indicator
-  lc <- seq_along(unique(group))
 
-  # grayscale
-  lgray <- gray((lc-1)/length(lc))
-
-  # line color indicator
-  if(grayscale == TRUE) {lc <- lgray}
 
   # plot by group
   if(!is.null(group)){
 
+    # group color indicator
+    lc <- seq_along(unique(group))
+
+    # grayscale
+    if(grayscale == TRUE) {
+      lc <- gray((lc-1)/length(lc))
+      }
+
+    #--------------------------
     # line color index
     i <- 1
 

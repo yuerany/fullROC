@@ -2,7 +2,7 @@
 % Please edit documentation in R/roc_plot.R
 \name{roc_plot}
 \alias{roc_plot}
-\title{A function to plot ROC curves.}
+\title{A function to plot ROC curves. Note that the NA values in the data will be replaced with zero.}
 \usage{
 roc_plot(cp, ca, group = NULL, byDR = FALSE, grayscale = FALSE, ...)
 }
@@ -24,7 +24,7 @@ For example, users can change x-axis and y-axis labels using \code{xlab} and \co
 Plot ROC curves and calculate AUCs as side effects.
 }
 \description{
-A function to plot ROC curves.
+A function to plot ROC curves. Note that the NA values in the data will be replaced with zero.
 }
 \examples{
 cpf1 <- c(100, 90, 80, 20, 10, 5)
