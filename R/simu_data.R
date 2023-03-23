@@ -18,7 +18,7 @@
 # response_calculate(cp_memory, 1:3)
 
 response_calculate <- function(memory, criterion,
-                     id_criterion = NULL, suspect = TRUE){
+                               id_criterion = NULL, suspect = TRUE){
 
   ######################
   # judge input values
@@ -27,50 +27,83 @@ response_calculate <- function(memory, criterion,
     stop("Must have odd number of criteria or specify the criterion for id.")
   }
 
-  #####################
-  # get suspect memory
-  suspect_memory <- memory[,1]
 
-  # calculate the max memory for each simulated row
-  max_memory <- apply(memory, 1, max)
-
-  #############################
-  # calculate id responses
-  #############################
-
+  ####################
+  # set up criterion for ID/REJ
+  ####################
   if(is.null(id_criterion)){
     # id/reject criterion: the middle criterion
     id_criterion <- criterion[median(1:length(criterion))]
   }
 
-  # for a designated suspect
-  if(suspect == TRUE){
-    # suspect id
-    ID <- ifelse(max_memory <= id_criterion, "REJ",
-                          ifelse(suspect_memory == max_memory, "IDS", "IDF") )
+  #####################
+  # added 3/22/2023
+  # for showups (memory only has one column)
+  if(is.vector(memory)){
+    ID <- ifelse(memory <= id_criterion, "REJ", "IDS")
+
+    #############################
+    # calculate associated confidence levels
+    #############################
+
+    # confidence bins
+    cll <- c(-Inf, criterion)
+    cul <- c(criterion, Inf)
+
+    # upper bin
+    cbin <- sapply(memory, function(x) min(which(x - cul <= 0)))
+
+    # create bin labels
+    clabel <- paste(paste0("c", cll), paste0("c", cul), sep = ":")
+
+    # confidence levels
+    confidence <- as.character(factor(cbin, levels = 1:(length(criterion)+1),
+                                      labels = clabel))
   }
-  # no designated suspect
-  else{
-    ID <- ifelse(max_memory <= id_criterion, "REJ", "IDF")
+
+  # for lineups (memory has more than one columns)
+  if(!is.vector(memory)){
+
+    #####################
+    # get suspect memory
+    suspect_memory <- memory[,1]
+
+    # caculate the max memory for each simulated row
+    max_memory <- apply(memory, 1, max)
+
+    #############################
+    # calculate id responses
+    #############################
+    # for a designated suspect
+    if(suspect == TRUE){
+      # suspect id
+      ID <- ifelse(max_memory <= id_criterion, "REJ",
+                   ifelse(suspect_memory == max_memory, "IDS", "IDF") )
+    }
+    # no designated suspect
+    if(suspect != TRUE){
+      ID <- ifelse(max_memory <= id_criterion, "REJ", "IDF")
+    }
+
+    #############################
+    # calculate associated confidence levels
+    #############################
+
+    # confidence bins
+    cll <- c(-Inf, criterion)
+    cul <- c(criterion, Inf)
+
+    # upper bin
+    cbin <- sapply(max_memory, function(x) min(which(x - cul <= 0)))
+
+    # create bin labels
+    clabel <- paste(paste0("c", cll), paste0("c", cul), sep = ":")
+
+    # confidence levels
+    confidence <- as.character(factor(cbin, levels = 1:(length(criterion)+1),
+                                      labels = clabel))
   }
 
-  #############################
-  # calculate associated confidence levels
-  #############################
-
-  # confidence bins
-  cll <- c(-Inf, criterion)
-  cul <- c(criterion, Inf)
-
-  # upper bin
-  cbin <- sapply(max_memory, function(x) min(which(x - cul <= 0)))
-
-  # create bin labels
-  clabel <- paste(paste0("c", cll), paste0("c", cul), sep = ":")
-
-  # confience levels
-  confidence <- as.character(factor(cbin, levels = 1:(length(criterion)+1),
-                       labels = clabel))
 
   #############################
   # return to id responses
@@ -115,32 +148,61 @@ response_calculate <- function(memory, criterion,
 
 
 response_simu <- function(guilt_diff, inno_diff = 0,
-                   n_sim = 1000, size = 6,
-                   inno_suspect = FALSE,
-                   criterion, id_criterion = NULL){
+                          n_sim = 10000, size = 6,
+                          inno_suspect = FALSE,
+                          criterion, id_criterion = NULL){
 
-  # number of fillers
-  fsize <- size-1
-
-  # simulate suspect and filler memory
+  # simulate suspect memory
   y_memory <- rnorm(n_sim, mean = guilt_diff)
   x_memory <- rnorm(n_sim, mean = inno_diff)
-  filler1 <- t(replicate(n_sim, rnorm(fsize, mean = 0)))
-  filler2 <- t(replicate(n_sim, rnorm(fsize, mean = 0)))
 
-  # combine suspect and filler memory
-  cp_memory <- cbind(y_memory, filler1)
-  ca_memory <- cbind(x_memory, filler2)
+  #-----------
+  # added 3/22/2023
+  # for showups, when size = 1
+  if(size == 1){
+    cp_memory <- as.vector(y_memory)
+    ca_memory <- as.vector(x_memory)
+  }
+
+
+  #-----------
+  # for lineups, when size > 1
+  if(size > 1)
+  {
+    # number of fillers
+    fsize <- size-1
+
+    # simulate filler memory signal
+    if(fsize == 1){
+      filler1 <- rnorm(n_sim, mean = 0)
+      filler2 <- rnorm(n_sim, mean = 0)
+    }
+    else{
+      filler1 <- replicate(fsize, rnorm(n_sim, mean = 0))
+      filler2 <- replicate(fsize, rnorm(n_sim, mean = 0))
+    }
+
+
+    # combine suspect and filler memory
+    cp_memory <- cbind(y_memory, filler1)
+    ca_memory <- cbind(x_memory, filler2)
+  }
+
 
   # cp responses
-  cp_id <- data.frame( lineup = "cp", response_calculate(cp_memory, criterion, id_criterion) )
+  cp_id <- data.frame( lineup = "cp",
+                       response_calculate(cp_memory, criterion, id_criterion) )
   # ca responses
-  ca_id <- data.frame( lineup = "ca", response_calculate(ca_memory, criterion, id_criterion, suspect = inno_suspect) )
+  ca_id <- data.frame( lineup = "ca",
+                       response_calculate(ca_memory, criterion, id_criterion, suspect = inno_suspect) )
 
   # combine the two
   id <- rbind(cp_id, ca_id)
 
+  # order factor levels
+  id$lineup <- factor(id$lineup, levels = c("cp", "ca"))
+  id$ID <- factor(id$ID, levels = c("IDS", "IDF", "REJ"))
+
   return(id)
 }
-
 
