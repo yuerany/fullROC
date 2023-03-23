@@ -1,5 +1,6 @@
 ######################################
 # FUNCTION to calculate response
+# 3/22/2023 modify the functions to simulate showup data
 ######################################
 #' A function to calculate responses from simulated memory distribution
 #'
@@ -173,14 +174,8 @@ response_simu <- function(guilt_diff, inno_diff = 0,
     fsize <- size-1
 
     # simulate filler memory signal
-    if(fsize == 1){
-      filler1 <- rnorm(n_sim, mean = 0)
-      filler2 <- rnorm(n_sim, mean = 0)
-    }
-    else{
-      filler1 <- replicate(fsize, rnorm(n_sim, mean = 0))
-      filler2 <- replicate(fsize, rnorm(n_sim, mean = 0))
-    }
+    filler1 <- replicate(fsize, rnorm(n_sim, mean = 0))
+    filler2 <- replicate(fsize, rnorm(n_sim, mean = 0))
 
 
     # combine suspect and filler memory
