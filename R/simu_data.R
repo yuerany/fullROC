@@ -149,7 +149,7 @@ response_calculate <- function(memory, criterion,
 
 
 response_simu <- function(guilt_diff, inno_diff = 0,
-                          n_sim = 10000, size = 6,
+                          n_sim = 1000, size = 6,
                           inno_suspect = FALSE,
                           criterion, id_criterion = NULL){
 

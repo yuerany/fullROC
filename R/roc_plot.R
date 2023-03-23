@@ -81,17 +81,19 @@ legend_add <- function(...){
 #' @param ca A vector of ca id rates or frequencies.
 #' @param group Grouping variable to indicate group membership. Will create an ROC curve and calculate AUC for each group.
 #' @param byDR Whether to order ids by diagnosticity ratios. Defaults to FALSE.
+#' @param cumdata Whether to output the cumulative data that are used to create the ROC curves. Default to FALSE.
 #' @param grayscale Whether to produce the plot in grayscale. Defaults to FALSE.
 #' @param ... Additional plotting parameters.
 #'            For example, users can change x-axis and y-axis labels using \code{xlab} and \code{ylab}.
 #' @return Plot ROC curves and calculate AUCs as side effects.
 #'
 #' @references
-#' Yueran Yang & Andrew Smith. (2020). "fullROC: An R package for generating and analyzing eyewitness-lineup ROC curves"
-#' \doi{10.13140/RG.2.2.20415.94885/1}
+#' Yueran Yang & Andrew Smith. (2022). "fullROC: An R package for generating and analyzing eyewitness-lineup ROC curves." \emph{Behavior Research Methods.}
+#' \doi{10.3758/s13428-022-01807-6}
 #'
 #' Andrew Smith, Yueran Yang, & Gary Wells. (2020). "Distinguishing between investigator discriminability and eyewitness discriminability: A method for creating full receiver operating characteristic curves of lineup identification performance". \emph{Perspectives on Psychological Science, 15}(3), 589-607.
 #' \doi{10.1177/1745691620902426}
+#'
 #'
 #' @examples
 #' cpf1 <- c(100, 90, 80, 20, 10, 5)
@@ -116,6 +118,7 @@ legend_add <- function(...){
 roc_plot <- function(cp, ca,
                      group = NULL,
                      byDR = FALSE,
+                     cumdata = FALSE,
                      grayscale = FALSE,
                      ...){
 
@@ -127,7 +130,10 @@ roc_plot <- function(cp, ca,
   # set up plotting area
   plot_add(NA, ...)
 
-
+  #----------------------
+  # save cumulative data
+  dsav <- list()
+  #----------------------
 
   # plot by group
   if(!is.null(group)){
@@ -153,6 +159,12 @@ roc_plot <- function(cp, ca,
       ### cumulative data
       d_cum <- data_cum(dtmp, byDR = byDR)
 
+
+      #--------------------------
+      # add the data to the cumulative data set
+      if(cumdata == TRUE){dsav[[g]] <- d_cum}
+      #--------------------------
+
       ### add ROC curve
       lines_add(d_cum[, 2], d_cum[, 1], col = lc[i], ...)
 
@@ -173,12 +185,23 @@ roc_plot <- function(cp, ca,
     ### cumulative data
     d_cum <- data_cum(data, byDR = byDR)
 
+    #--------------------------
+    # add the data to the cumulative data set
+    if(cumdata == TRUE){dsav <- d_cum}
+    #--------------------------
+
     ### add ROC curve
     lines_add(d_cum[, 2], d_cum[, 1], ...)
 
     ### calculate auc
     message("AUC = ", roc_auc0(data, byDR = byDR), "\n")
   }
+
+
+  #--------------------------
+  # cumulative data set
+  if(cumdata == TRUE) { return(dsav) }
+  #--------------------------
 
 }
 

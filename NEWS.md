@@ -1,18 +1,9 @@
-## Test environments
-* local R installation, R 4.2.3
-* ubuntu 16.04 (on travis-ci), R 4.2.3
-* win-builder (devel)
+## For version 0.1.1
+## Updates 3/23/2023
 
-## R CMD check results
+* Added a function roc_line() to enable users to add ROC lines to an existing ROC plot.
 
-0 errors | 0 warnings | 0 notes
-
-
-## Resubmission
-
-This is a resubmission (3/23/2023). In this version I have:
-
-* Added additional functions to add ROC lines to an existing ROC plot and to create z-ROC curves.
+* added a function zroc_plot() to create z-ROC curves.
 
 * Updated the response_simu() function to enable users to simulate showup data.
 
@@ -20,14 +11,15 @@ This is a resubmission (3/23/2023). In this version I have:
 
 * Updated doi for the Yang & Smith (2022) reference.
 
-This is a resubmission (1/8/2021). In this version I have:
+## For version 0.1.0
+## Updates 1/8/2021
 
 * Reduce the length of the title to 49 characters (with spaces).
 
 * Added references to the description of the DESCRIPTION file.
 
 
-This is a resubmission (1/6/2021). In this version I have:
+## Updates 1/6/2021
 
 * Added explanations of all acronyms to the DESCRIPTION.
 

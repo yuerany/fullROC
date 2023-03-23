@@ -32,6 +32,7 @@ lines_add <- function(x, y, ...){
 #' @param cp A vector of cp id rates or frequencies.
 #' @param ca A vector of ca id rates or frequencies.
 #' @param byDR Whether to order ids by diagnosticity ratios. Defaults to FALSE.
+#' @param cumdata Whether to output the cumulative data that are used to create the ROC curves. Default to FALSE.
 #' @param ... Additional plotting parameters.
 #'            For example, users can change x-axis and y-axis labels using \code{xlab} and \code{ylab}.
 #' @return Plot ROC curves and calculate AUCs as side effects.
@@ -41,6 +42,7 @@ lines_add <- function(x, y, ...){
 
 roc_line <- function(cp, ca,
                      byDR = FALSE,
+                     cumdata = FALSE,
                      ...){
 
   message("check order of input: cp first, ca second")
@@ -57,6 +59,12 @@ roc_line <- function(cp, ca,
 
   ### calculate auc
   message("AUC = ", roc_auc0(data, byDR = byDR), "\n")
+
+
+  #--------------------------
+  # cumulative data set
+  if(cumdata == TRUE){return(d_cum)}
+  #--------------------------
 
 }
 

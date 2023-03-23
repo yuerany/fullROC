@@ -4,7 +4,15 @@
 \alias{roc_plot}
 \title{A function to plot ROC curves. Note that the NA values in the data will be replaced with zero.}
 \usage{
-roc_plot(cp, ca, group = NULL, byDR = FALSE, grayscale = FALSE, ...)
+roc_plot(
+  cp,
+  ca,
+  group = NULL,
+  byDR = FALSE,
+  cumdata = FALSE,
+  grayscale = FALSE,
+  ...
+)
 }
 \arguments{
 \item{cp}{A vector of cp id rates or frequencies.}
@@ -14,6 +22,8 @@ roc_plot(cp, ca, group = NULL, byDR = FALSE, grayscale = FALSE, ...)
 \item{group}{Grouping variable to indicate group membership. Will create an ROC curve and calculate AUC for each group.}
 
 \item{byDR}{Whether to order ids by diagnosticity ratios. Defaults to FALSE.}
+
+\item{cumdata}{Whether to output the cumulative data that are used to create the ROC curves. Default to FALSE.}
 
 \item{grayscale}{Whether to produce the plot in grayscale. Defaults to FALSE.}
 
@@ -44,8 +54,8 @@ roc_plot(cpf, caf, group = group)
 
 }
 \references{
-Yueran Yang & Andrew Smith. (2020). "fullROC: An R package for generating and analyzing eyewitness-lineup ROC curves"
-\doi{10.13140/RG.2.2.20415.94885/1}
+Yueran Yang & Andrew Smith. (2022). "fullROC: An R package for generating and analyzing eyewitness-lineup ROC curves." \emph{Behavior Research Methods.}
+\doi{10.3758/s13428-022-01807-6}
 
 Andrew Smith, Yueran Yang, & Gary Wells. (2020). "Distinguishing between investigator discriminability and eyewitness discriminability: A method for creating full receiver operating characteristic curves of lineup identification performance". \emph{Perspectives on Psychological Science, 15}(3), 589-607.
 \doi{10.1177/1745691620902426}
